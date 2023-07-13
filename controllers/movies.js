@@ -22,7 +22,7 @@ module.exports.createMovie = (req, res, next) => {
     year,
     description,
     image,
-    trailerLink: trailer,
+    trailer,
     thumbnail,
     movieId,
     nameRU,
