@@ -38,7 +38,7 @@ const movieSchema = new mongoose.Schema({
     ...requiredString('Описание', 10),
   },
   image: urlString('Изображение'),
-  trailer: urlString('Ссылка на трейлер'),
+  trailerLink: urlString('Ссылка на трейлер'),
   thumbnail: urlString('Миниатюрное изображение'),
   owner: {
     type: mongoose.Schema.Types.ObjectId,
