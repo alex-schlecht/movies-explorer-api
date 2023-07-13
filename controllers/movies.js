@@ -15,19 +15,19 @@ module.exports.createMovie = (req, res, next) => {
   const { country, director, duration, year, description, image, trailer, thumbnail, movieId, nameRU, nameEN } = req.body;
   const userId = req.user._Id;
 
-  Movie.create({ 
-    country, 
-    director, 
-    duration, 
-    year, 
-    description, 
-    image, 
-    trailerURL: trailer, 
-    thumbnail, 
-    movieId, 
-    nameRU, 
+  Movie.create({
+    country,
+    director,
+    duration,
+    year,
+    description,
+    image,
+    trailerLink: trailer,
+    thumbnail,
+    movieId,
+    nameRU,
     nameEN,
-    owner: userId, 
+    owner: userId,
   })
   .then((movie) => movie.populate('owner'))
   .then((movie) => res.status(201).send(movie))
