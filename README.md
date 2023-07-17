@@ -15,5 +15,5 @@
 `npm run dev` — запускает сервер с hot-reload
 ## Ссылки
 
-Api Backend Movies explorer: https://api.movie.nomoredomains.work
-Frontend Movies Explorer: https://movie-explorer-diplom.nomoredomains.work
+* Api Backend Movies explorer: https://api.movie.nomoredomains.work
+* Frontend Movies Explorer: https://movie-explorer-diplom.nomoredomains.work
