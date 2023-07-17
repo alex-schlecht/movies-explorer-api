@@ -1,8 +1,8 @@
 const jwt = require('jsonwebtoken');
 const bcrypt = require('bcrypt');
+const User = require('../models/user');
 const { CastError } = require('mongoose').Error;
 const Conflict = require('../errors/Conflict');
-const User = require('../models/user');
 const { errorHandler } = require('../utils/errorHandler');
 
 require('dotenv').config();

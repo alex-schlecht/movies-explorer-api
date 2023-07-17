@@ -13,7 +13,7 @@ module.exports.getMovie = (req, res, next) => {
 
 module.exports.createMovie = (req, res, next) => {
   const { country, director, duration, year, description, image, trailer, thumbnail, movieId, nameRU, nameEN } = req.body;
-  const userId = req.user._Id;
+  const userId = req.user._id;
 
   Movie.create({
     country,

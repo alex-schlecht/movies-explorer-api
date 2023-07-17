@@ -19,6 +19,7 @@ const userSchema = new mongoose.Schema({
     type: String,
     minlength: [2, 'Имя пользователя должно быть не короче 2 символов'],
     maxlength: [30, 'Имя пользователя должно быть не длиннее 30 символов'],
+    required: [true, 'Имя не может быть пустым']
   },
   password: {
     type: String,
