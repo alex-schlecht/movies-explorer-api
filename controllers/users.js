@@ -1,7 +1,6 @@
 const jwt = require('jsonwebtoken');
 const bcrypt = require('bcrypt');
 const User = require('../models/user');
-const { CastError } = require('mongoose').Error;
 const Conflict = require('../errors/Conflict');
 const { errorHandler } = require('../utils/errorHandler');
 
@@ -39,12 +38,9 @@ module.exports.createUser = (req, res, next) => {
     })
     .catch((err) => {
       if (err.code === 11000) {
-        next(new Conflict('Такой email уже зарегистрирован'));
-      } else if (err.name === 'ValidationError') {
-        next(new CastError('Переданы некорректные данные'));
-      } else {
-        next(err);
+        return next(new Conflict('Такой email уже зарегистрирован'));
       }
+      return errorHandler(err, res, next);
     });
 };
 
@@ -61,7 +57,10 @@ module.exports.login = (req, res, next) => {
         .cookie('jwt', token, {
           maxAge: 3600000 * 24 * 7,
           httpOnly: true,
-        }).send({ email: user.email, name: user.name });
+        }).send({ 
+          email: user.email, 
+          name: user.name 
+        });
     })
     .catch((err) => next(err));
 };
@@ -70,26 +69,28 @@ module.exports.updateUserProfile = (req, res, next) => {
   const { name, email } = req.body;
   const { _id } = req.user;
 
-  const profileChange = (userName, userEmail) => User.findByIdAndUpdate(
+  User.findByIdAndUpdate(
     _id,
-    { name: userName, email: userEmail },
+    { name, email },
     {
       new: true,
-      runValidators: true,
-    },
-  );
-
-  User.findOne({ email })
-  .then((existingUser) => {
-    if (existingUser) {
-      return next(new Conflict('Email уже занят другим пользователем'));
+      runValidators: true
     }
-    return profileChange(name, email);
-  })
-  .then((user) => res.status(201).send({
-    _id: user._id, email: user.email, name: user.name,
-  }))
-  .catch(() => next);
+  )
+    .then((user) => {
+      res.status(200)
+      .send({
+        _id: user._id,
+        email: user.email,
+        name: user.name
+      });
+    })
+    .catch((err) => {
+      if (err.code === 11000) {
+        return next(new Conflict('Такой email уже зарегистрирован'));
+      }
+      return errorHandler(err, res, next);
+    });
 };
 
 module.exports.logout = (req, res) => {

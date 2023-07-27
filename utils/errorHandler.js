@@ -1,6 +1,7 @@
-const { ValidationError, CastError, DocumentNotFoundError } = require('mongoose').Error;
+const { ValidationError, CastError, DocumentNotFoundError, MongoError } = require('mongoose').Error;
+const InternalServer = require('../errors/InternalServer');
 const BadRequest = require('../errors/BadRequest');
-const NotFound = require('../errors/PageNotFound');
+const PageNotFound = require('../errors/PageNotFound');
 
 module.exports.errorHandler = (err, res, next) => {
   switch (err.constructor) {
@@ -13,9 +14,12 @@ module.exports.errorHandler = (err, res, next) => {
       next(new BadRequest(err.message));
       break;
     case DocumentNotFoundError:
-      next(new NotFound(err.message));
+      next(new PageNotFound(err.message));
+      break;
+    case MongoError:
+      next(new InternalServer(err.message));
       break;
     default:
-      next(err);
-  }
+      next(new InternalServer(err.message));
+  };
 };

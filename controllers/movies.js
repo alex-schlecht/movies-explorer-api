@@ -5,7 +5,6 @@ const Forbidden = require('../errors/Forbidden');
 module.exports.getMovie = (req, res, next) => {
   const userId = req.user._id;
   Movie.find({ owner: userId })
-    .sort({ createdAt: -1 })
     .populate('owner')
     .then((movieAll) => res.send(movieAll))
     .catch((err) => errorHandler(err, res, next));
@@ -37,15 +36,14 @@ module.exports.createMovie = (req, res, next) => {
 module.exports.deleteMovie = (req, res, next) => {
   const { id } = req.params;
   const userId = req.user._id;
-  const deleteMovie = (_id) => Movie.findOneAndDelete(_id);
   Movie.findById({ _id: id })
   .orFail()
   .then((movie) => {
     if (movie.owner._id.valueOf() !== userId) {
       return next(new Forbidden('Доступ запрещен'));
     }
-    return deleteMovie(movie._id)
-      .then((deleteMovie) => res.send(deleteMovie));
+    return movie.deleteOne();
   })
+  .then((deleteMov) => res.send(deleteMov))
   .catch((err) => errorHandler(err, res, next));
 };
