@@ -6,8 +6,8 @@ router.get('/', getMovie);
 
 router.post('/', celebrate({
   body: Joi.object({
-    country: Joi.string().required().min(2).max(30),
-    director: Joi.string().required().min(2).max(30),
+    country: Joi.string().required().min(2).max(80),
+    director: Joi.string().required().min(2).max(80),
     duration: Joi.number().required().min(1),
     year: Joi.number().integer().min(1895).max(new Date().getFullYear()),
     description: Joi.string().required().min(10),
@@ -15,8 +15,8 @@ router.post('/', celebrate({
     trailer: Joi.string().required().uri(),
     thumbnail: Joi.string().required().uri(),
     movieId: Joi.number().required().min(1),
-    nameRU: Joi.string().required().min(2).max(70),
-    nameEN: Joi.string().required().min(2).max(70),
+    nameRU: Joi.string().required().min(2).max(80),
+    nameEN: Joi.string().required().min(2).max(80),
   }),
 }), createMovie);
 
