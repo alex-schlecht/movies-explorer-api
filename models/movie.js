@@ -19,10 +19,10 @@ const urlString = (string) => ({
 
 const movieSchema = new mongoose.Schema({
   country: {
-    ...requiredString('Страна', 3, 30),
+    ...requiredString('Страна', 3, 80),
   },
   director: {
-    ...requiredString('Режиссёр', 2, 30),
+    ...requiredString('Режиссёр', 2, 80),
   },
   duration: {
     type: Number,
